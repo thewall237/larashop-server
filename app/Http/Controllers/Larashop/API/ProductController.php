@@ -81,8 +81,8 @@ class ProductController extends Controller
      * @param  ShowRequest  $request
      * @return ProductResource
      */
-    // public function show(ShowRequest $request, Product $product)
-    // {
-    //     return new ProductResource($product);
-    // }
+    public function show(ShowRequest $request, Product $product)
+    {
+        return new ProductResource($product);
+    }
 }
