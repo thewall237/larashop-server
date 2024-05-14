@@ -21,10 +21,10 @@ use Illuminate\Support\Facades\Route;
 Route::post('/auth/signin', [AuthController::class, 'signin']);
 
 Route::middleware(['auth:admin_api'])->group(function () {
-      Route::post('/auth/signout', [AuthController::class, 'signout']);
-      Route::get('/auth/me', [AuthController::class, 'getMe']);
+  Route::post('/auth/signout', [AuthController::class, 'signout']);
+  Route::get('/auth/me', [AuthController::class, 'getMe']);
 
-  //     Route::get('/deals', [DealController::class, 'index']);
+  Route::get('/deals', [DealController::class, 'index']);
   //     Route::get('/deals/{deal}', [DealController::class, 'show']);
 
   //     Route::get('/users', [UserController::class, 'index']);
