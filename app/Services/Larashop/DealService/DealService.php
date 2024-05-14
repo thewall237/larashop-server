@@ -21,8 +21,8 @@ class DealService implements DealServiceInterface
 {
 
     /**
-    * @var StripeServiceInterface
-    */
+     * @var StripeServiceInterface
+     */
     private $stripeService;
 
     /**
@@ -31,8 +31,7 @@ class DealService implements DealServiceInterface
      */
     public function __construct(
         StripeServiceInterface $stripeService
-    )
-    {
+    ) {
         $this->stripeService = $stripeService;
     }
 
@@ -128,27 +127,27 @@ class DealService implements DealServiceInterface
      * @exception InvalidStatusTransitionException
      * @return Deal
      */
-    // public function reportDelivery(Deal $deal, User $seller): Deal
-    // {
-    //     if (!in_array($deal->status, [DealStatus::Purchased])) {
-    //         throw new InvalidStatusTransitionException();
-    //     }
-        
-    //     $deal = DB::transaction(function () use ($deal, $seller) {
-    //         $deal->update(['status' => DealStatus::Shipping]);
+    public function reportDelivery(Deal $deal, User $seller): Deal
+    {
+        if (!in_array($deal->status, [DealStatus::Purchased])) {
+            throw new InvalidStatusTransitionException();
+        }
 
-    //         $dealEvent = new DealEvent([
-    //             'actor_type' => DealEventActorType::Seller,
-    //             'event_type' => DealEventEventType::ReportDelivery,
-    //         ]);
-    //         $dealEvent->deal_eventable()->associate($seller);
-    //         $deal->dealEvents()->save($dealEvent);
+        $deal = DB::transaction(function () use ($deal, $seller) {
+            $deal->update(['status' => DealStatus::Shipping]);
 
-    //         return $deal->fresh();
-    //     });
+            $dealEvent = new DealEvent([
+                'actor_type' => DealEventActorType::Seller,
+                'event_type' => DealEventEventType::ReportDelivery,
+            ]);
+            $dealEvent->deal_eventable()->associate($seller);
+            $deal->dealEvents()->save($dealEvent);
 
-    //     return $deal;
-    // }
+            return $deal->fresh();
+        });
+
+        return $deal;
+    }
 
     /*
      * 受取報告
@@ -158,27 +157,27 @@ class DealService implements DealServiceInterface
      * @exception InvalidStatusTransitionException
      * @return Deal
      */
-    // public function reportReceipt(Deal $deal, User $buyer): Deal
-    // {
-    //     if (!in_array($deal->status, [DealStatus::Shipping])) {
-    //         throw new InvalidStatusTransitionException();
-    //     }
-        
-    //     $deal = DB::transaction(function () use ($deal, $buyer) {
-    //         $deal->update(['status' => DealStatus::Completed]);
+    public function reportReceipt(Deal $deal, User $buyer): Deal
+    {
+        if (!in_array($deal->status, [DealStatus::Shipping])) {
+            throw new InvalidStatusTransitionException();
+        }
 
-    //         $dealEvent = new DealEvent([
-    //             'actor_type' => DealEventActorType::Buyer,
-    //             'event_type' => DealEventEventType::ReportReceipt,
-    //         ]);
-    //         $dealEvent->deal_eventable()->associate($buyer);
-    //         $deal->dealEvents()->save($dealEvent);
+        $deal = DB::transaction(function () use ($deal, $buyer) {
+            $deal->update(['status' => DealStatus::Completed]);
 
-    //         return $deal->fresh();
-    //     });
+            $dealEvent = new DealEvent([
+                'actor_type' => DealEventActorType::Buyer,
+                'event_type' => DealEventEventType::ReportReceipt,
+            ]);
+            $dealEvent->deal_eventable()->associate($buyer);
+            $deal->dealEvents()->save($dealEvent);
 
-    //     return $deal;
-    // }
+            return $deal->fresh();
+        });
+
+        return $deal;
+    }
 
     /*
      * 商品購入についてバリデーションチェック
