@@ -14,8 +14,8 @@ class DealController extends Controller
 {
 
     /**
-    * @var DealServiceInterface
-    */
+     * @var DealServiceInterface
+     */
     private $dealService;
 
     /**
@@ -24,8 +24,7 @@ class DealController extends Controller
      */
     public function __construct(
         DealServiceInterface $dealService
-    )
-    {
+    ) {
         $this->dealService = $dealService;
     }
 
@@ -60,9 +59,9 @@ class DealController extends Controller
      * @param  ShowRequest  $request
      * @return DealDetailResource
      */
-    // public function show(ShowRequest $request, Deal $deal)
-    // {
-    //     $deal->load('dealEvents');
-    //     return new DealDetailResource($deal);
-    // }
+    public function show(ShowRequest $request, Deal $deal)
+    {
+        $deal->load('dealEvents');
+        return new DealDetailResource($deal);
+    }
 }
